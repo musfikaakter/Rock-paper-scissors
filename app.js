@@ -1,91 +1,74 @@
-///
-let userMove;
-const user = document.querySelector(".user");
-const computer = document.querySelector(".computer");
-const result = document.querySelector(".result");
+// get score
+let userScore = document.querySelector(".user_score");
+let compScore = document.querySelector(".computer_score");
 
-// rock
-const rockMove = document.querySelector(".rock");
+// show message
+const showMsg = document.querySelector(".result");
+let userWin = true;
 
-rockMove.addEventListener("click", () => {
-  result.style.color = "#ffffff";
-  let userMove = 1;
-  let computerMove = Math.floor(Math.random() * 3 + 1);
-
-  if (userMove && computerMove == 2) {
-    result.textContent = `You lost!`;
-    result.style.backgroundColor = "#ff0000";
-    computer.textContent++;
-  } else if (userMove && computerMove == 3) {
-    result.textContent = `You won!`;
-    result.style.backgroundColor = "#00ff73";
-    user.textContent++;
+const showWinner = (userWin, userMove, compMove) => {
+  if (userWin) {
+    showMsg.textContent = `You won! ${userMove} beats ${compMove}`;
+    showMsg.style.backgroundColor = "#00ff73";
+    userScore.textContent++;
   } else {
-    result.textContent = `Draw!`;
-    result.style.backgroundColor = "#8a2ce2";
-    computer.textContent;
-    user.textContent;
+    showMsg.textContent = `You lost! ${compMove} beats ${userMove}`;
+    showMsg.style.backgroundColor = "#ff0000";
+    compScore.textContent++;
   }
-});
+};
 
-// paper
-const paperMove = document.querySelector(".paper");
+// draw message
+const drawGame = () => {
+  console.log("draw");
+  showMsg.textContent = `Draw`;
+  showMsg.style.backgroundColor = "#8a2ce2";
+};
 
-paperMove.addEventListener("click", () => {
-  result.style.color = "#ffffff";
-  let userMove = 2;
-  let computerMove = Math.floor(Math.random() * 3 + 1);
+// get computer move
+const genCompMove = () => {
+  const options = ["rock", "paper", "scissors"];
+  const index = Math.floor(Math.random() * 3);
+  return options[index];
+};
 
-  if (userMove && computerMove == 1) {
-    result.textContent = `You won!`;
-    result.style.backgroundColor = "#00ff73";
-    user.textContent++;
-  } else if (userMove && computerMove == 3) {
-    result.textContent = `You lost!`;
-    result.style.backgroundColor = "#ff0000";
-    computer.textContent++;
+/// game moves
+const playGames = (userMove) => {
+  const compMove = genCompMove();
+
+  if (userMove === compMove) {
+    drawGame();
   } else {
-    result.textContent = `Draw!`;
-    result.style.backgroundColor = "#8a2ce2";
-    computer.textContent;
-    user.textContent;
+    if (userMove === "rock") {
+      userWin = compMove === "paper" ? false : true;
+    } else if (userMove === "paper") {
+      userWin = compMove === "scissors" ? false : true;
+    } else {
+      userWin = compMove === "rock" ? false : true;
+    }
+    showWinner(userWin, userMove, compMove);
   }
-});
 
-// scissors
-const scissorsMove = document.querySelector(".scissors");
+  showMsg.style.color = "#ffffff";
+};
 
-scissorsMove.addEventListener("click", () => {
-  result.style.color = "#ffffff";
-  let userMove = 3;
-  let computerMove = Math.floor(Math.random() * 3 + 1);
+const moves = document.querySelectorAll(".moves");
+moves.forEach((move) => {
+  move.addEventListener("click", () => {
+    const userMove = move.getAttribute("id");
+    playGames(userMove);
 
-  if (userMove && computerMove == 1) {
-    result.textContent = `You lost!`;
-    result.style.backgroundColor = "#ff0000";
-    computer.textContent++;
-  } else if (userMove && computerMove == 2) {
-    result.textContent = `You won!`;
-    result.style.backgroundColor = "#00ff73";
-    user.textContent++;
-  } else {
-    result.textContent = `Draw!`;
-    result.style.backgroundColor = "#8a2ce2";
-    computer.textContent;
-    user.textContent;
-  }
+  });
 });
 
 // restart
 const restart = document.querySelector(".restart");
 
 restart.addEventListener("click", () => {
-  result.textContent = `Pick your move`;
-  user.textContent = "0";
-  computer.textContent = "0";
-  result.style.backgroundColor = "transparent";
-  result.style.color = "#8a2ce2";
+  showMsg.textContent = `Pick your move`;
+  userScore.textContent = "0";
+  compScore.textContent = "0";
+  showMsg.style.backgroundColor = "transparent";
+  showMsg.style.color = "#8a2ce2";
 });
-
-
 
