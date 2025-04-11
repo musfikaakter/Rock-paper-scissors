@@ -20,7 +20,6 @@ const showWinner = (userWin, userMove, compMove) => {
 
 // draw message
 const drawGame = () => {
-  console.log("draw");
   showMsg.textContent = `Draw`;
   showMsg.style.backgroundColor = "#8a2ce2";
 };
